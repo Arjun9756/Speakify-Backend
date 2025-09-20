@@ -160,3 +160,5 @@ bot.on('callback_query', async (q) => {
         await sendMessage(chatId , "Server is Striclty Busy Due to Heavy Load Wait Developers Are Working On !!!!")
     }
 })
+
+console.log("Telegram is Runnig")

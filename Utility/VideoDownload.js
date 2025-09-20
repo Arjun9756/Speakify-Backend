@@ -17,25 +17,32 @@ if (!fs.existsSync(downloadDir)) {
  * @returns {Object}
  */
 
-async function downloadVideo(youtubeURL = '' , videoId = '' , qualityNo = 1){
-    return new Promise((resolve , reject)=>{
+async function downloadVideo(youtubeURL = '', videoId = '', qualityNo = 1) {
+    return new Promise((resolve, reject) => {
 
         const cleanURL = youtubeURL.trim()
         const outputFilePath = path.join(downloadDir, `${Date.now()}_${videoId}.webm`)
 
-        const videoStream = ytdl(cleanURL , {filter:"audioandvideo" , quality:(qualityNo === 1 ? "highestvideo" : "lowestvideo")})
+        const videoStream = ytdl(cleanURL, {
+            filter: "audioandvideo", quality: (qualityNo === 1 ? "highestvideo" : "lowestvideo"), requestOptions: {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114 Safari/537.36",
+                    "Accept-Language": "en-US,en;q=0.9"
+                }
+            }
+        })
         const writeStream = fs.createWriteStream(outputFilePath)
-        
+
         videoStream.pipe(writeStream)
-        writeStream.on('finish' , ()=>{
+        writeStream.on('finish', () => {
             resolve({
-                status:true,
+                status: true,
                 outputFilePath,
-                message:"Download Successful"
+                message: "Download Successful"
             })
         })
 
-        videoStream.on('error' , (err)=>{
+        videoStream.on('error', (err) => {
             writeStream.destroy()
             fs.unlink(outputFilePath, () => { })
             reject({

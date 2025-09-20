@@ -20,7 +20,14 @@ async function downloadAudio(youtubeURL = '', videoId = '') {
         const outputFilePath = path.join(downloadDir, `${Date.now()}_${videoId}.mp3`)
         const cleanURL = youtubeURL.trim()
 
-        const audioStream = ytdl(cleanURL, { filter: "audioonly", quality: "highestaudio" })
+        const audioStream = ytdl(cleanURL, {
+            filter: "audioonly", quality: "highestaudio", requestOptions: {
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114 Safari/537.36",
+                    "Accept-Language": "en-US,en;q=0.9"
+                }
+            }
+        })
         const writeStream = fs.createWriteStream(outputFilePath)
 
         audioStream.pipe(writeStream)

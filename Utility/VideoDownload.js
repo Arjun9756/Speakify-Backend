@@ -4,8 +4,9 @@ const path = require('path')
 
 // If Folder is Not Created on the Server
 
-if(!fs.existsSync(path.join(__dirname , '..' , 'VideoDownload'))){
-    fs.mkdirSync(path.join(__dirname , '..' , 'VideoDownload'))
+const downloadDir = process.env.VERCEL ? '/tmp' : path.join(__dirname, '..', 'VideoDownload');
+if (!fs.existsSync(downloadDir)) {
+    fs.mkdirSync(downloadDir, { recursive: true });
 }
 
 /**
@@ -20,7 +21,7 @@ async function downloadVideo(youtubeURL = '' , videoId = '' , qualityNo = 1){
     return new Promise((resolve , reject)=>{
 
         const cleanURL = youtubeURL.trim()
-        const outputFilePath = path.join(__dirname , '..' , 'VideoDownload' , `${Date.now()}_${videoId}.webm`)
+        const outputFilePath = path.join(downloadDir, `${Date.now()}_${videoId}.webm`)
 
         const videoStream = ytdl(cleanURL , {filter:"audioandvideo" , quality:(qualityNo === 1 ? "highestvideo" : "lowestvideo")})
         const writeStream = fs.createWriteStream(outputFilePath)

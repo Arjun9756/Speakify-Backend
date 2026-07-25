@@ -4,7 +4,7 @@ const dotenv = require('dotenv').config({ path: path.join(__dirname, '..', '.env
 const fs = require('fs')
 const downloadAudio = require('../Utility/AudioDownload')
 const downloadVideo = require('../Utility/VideoDownload')
-const URLVeirfy = require('../Utility/URLVerify')
+const URLVeirfy = require('../Utility/URLVerify') 
 
 const bot = new TelegramBot(process.env.TELEGRAM_API, { polling: true })
 

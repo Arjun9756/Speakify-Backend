@@ -7,7 +7,7 @@ const Telegram = require('./Telegram/Telegram')
 
 const app = express()
 app.use(cors({
-    origin:"*"
+    origin:"*" 
 }))
 
 dotenv.config({

@@ -3,7 +3,7 @@
  * @returns {Object}
  */
 
-function isValidURL(url = '') {
+function isValidURL(url = '') { 
     try {
         const parsedURL = new URL(url)
         // Case 1: www.youtube.com/watch?v=VIDEO_ID
